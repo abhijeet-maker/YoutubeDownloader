@@ -1,5 +1,6 @@
 import ffmpeg
 import pytube
+from django.conf import settings
 from django.shortcuts import render
 from django.http import HttpResponse
 
@@ -75,6 +76,9 @@ def select_videos_res(request):
 
 #serve over client now
 def download(request):
+    document_root = settings.MEDIA_ROOT
+    document_url=settings.MEDIA_URL
+    print("Media root",document_root ,document_url)
     BaseDir = "download_raw"
     file_path = BaseDir + "/" + "COSTA.mp4"
     #file_path = os.path.join(settings.MEDIA_ROOT, path)
