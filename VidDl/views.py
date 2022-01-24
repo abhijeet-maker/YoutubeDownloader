@@ -36,6 +36,24 @@ def get_videos_res(request):
         resolutions.append(key)
     return render(request, 'ytdl/get_resolution.html', {'resolution': resolutions})
 
+
+#Merge Audi Video
+def merge_audio_video(video,audio,output):
+    input_video = ffmpeg.input(video)
+    input_audio = ffmpeg.input(audio)
+    #stream = ffmpeg.concat(input_video, input_audio, v=1, a=1)
+    #.output(<video_name>, vcodec="copy", acodec="copy ")
+    stream=ffmpeg.output(input_video, input_audio, output, vcodec="copy")
+    #comp=ffmpeg.compile(stream, cmd=BaseDir+'/ffmpeg/bin/ffmpeg')
+    #print(comp)
+    try:
+        #print(comp)
+        ffmpeg.run(stream, cmd='venv/Lib/site-packages/ffmpeg/ffmpeg.exe', capture_stdout=True, capture_stderr=True, input=None, quiet=False, overwrite_output=True)
+    except ffmpeg.Error as e:
+        #print('stdout:', e.stdout.decode('utf8'))
+        print('stderr:', e.stderr.decode('utf8'))
+        raise e
+    return("Video Downloaded Sucessfully")
 #Downloaded on local server
 def select_videos_res(request):
     BaseDir="download_raw"
@@ -81,6 +99,11 @@ def select_videos_res(request):
     else:
         #title=title+".mp4"
         vid.download(output_path=BaseDir, filename=title)
+    video = BaseDir + "\\.temp" + title + "\\" + title + ".mp4"
+    audio = BaseDir + "\\.temp" + "\\" + title + ".mp3"
+    output = BaseDir + "\\" + title + ".mp4"
+    OP = merge_audio_video(video, audio, output)
+    print(OP)
     file=BaseDir+"/"+title
     print("file",file)
     select_videos_res.title=title
@@ -91,12 +114,12 @@ def download(request):
     document_root = settings.MEDIA_ROOT
     print("Media root",document_root)
     BaseDir = "download_raw"
-    file_path = BaseDir + "/" + select_videos_res.title
+    file_path = BaseDir + "/" + select_videos_res.title+".mp4"
     print("file_path",file_path)
     #file_path = os.path.join(settings.MEDIA_ROOT, path)
     with open(file_path, 'rb') as fh:
             response = HttpResponse(fh.read(), content_type="application/vnd.rar")
-            response['Content-Disposition'] = 'inline; filename=' + file_path +".mp4"
+            response['Content-Disposition'] = 'inline; filename=' + file_path
             return response
     return render(request, 'ytdl/download_completed.html')
 
