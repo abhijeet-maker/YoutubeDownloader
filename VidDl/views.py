@@ -1,3 +1,5 @@
+import sys
+
 import ffmpeg
 import pytube
 from django.conf import settings
@@ -54,24 +56,32 @@ def select_videos_res(request):
     if vid not in get_videos_res.yt.streams.filter(progressive=True):
 
         # Download video in 360p
-        get_videos_res.yt.streams.get_by_itag(18).download(output_path=BaseDir + "\\\.temp", filename=title)
+        get_videos_res.yt.streams.get_by_itag(18).download(output_path=BaseDir + "\\\.temp", filename=title+".mp4")
 
         # Download Video in selected resolution
-        vid.download(output_path=BaseDir + "\\\.temp" + title, filename=title)
+        vid.download(output_path=BaseDir + "\\\.temp" + title, filename=title+".mp4")
 
         # Filter audio from 360p
         stream = ffmpeg.input(BaseDir + "\\\.temp" + "\\" + title + ".mp4")
+        print("stream video", stream)
         stream = stream.output(BaseDir + "\\\.temp" + "\\" + title + ".mp3", format='mp3', acodec='libmp3lame',
                                ab='320000')
-        # stream=stream.output("C:\\Users\\Abhijeet\\Desktop\\PyProjects\\mp\\\.temp\\Peru_finished_audio.mp3", format='mp3', acodec='libmp3lame', ab='320000')
-        ffmpeg.run(stream, capture_stdout=True, capture_stderr=True, input=None, quiet=False, overwrite_output=True)
-        # ffmpeg.run(stream, cmd=ffmpeg_path+'/ffmpeg/bin/ffmpeg', capture_stdout=True, capture_stderr=True, input=None, quiet=False, overwrite_output=True)
 
+        print("stream audio",stream)
+        # stream=stream.output("C:\\Users\\Abhijeet\\Desktop\\PyProjects\\mp\\\.temp\\Peru_finished_audio.mp3", format='mp3', acodec='libmp3lame', ab='320000')
+        #ffmpeg.run(stream, capture_stdout=True, capture_stderr=True, input=None, quiet=False, overwrite_output=True)
+        try:
+            err,out=(ffmpeg.run(stream, cmd='venv/Lib/site-packages/ffmpeg/ffmpeg.exe', capture_stdout=True, capture_stderr=True, input=None, quiet=False, overwrite_output=True))
+            print("out***********: ",out,"outerr*********: ",err)
+        except ffmpeg.Error as e:
+            print("err*********:" ,e.stderr, file=sys.stderr)
         # If stream is progressive
     else:
+        #title=title+".mp4"
         vid.download(output_path=BaseDir, filename=title)
     file=BaseDir+"/"+title
     print("file",file)
+    select_videos_res.title=title
     return render(request, 'ytdl/download.html/', {'file': file, 'title': title})
 
 #serve over client now
@@ -79,12 +89,12 @@ def download(request):
     document_root = settings.MEDIA_ROOT
     print("Media root",document_root)
     BaseDir = "download_raw"
-    file_path = BaseDir + "/" + "COSTA.mp4"
+    file_path = BaseDir + "/" + select_videos_res.title
     print("file_path",file_path)
     #file_path = os.path.join(settings.MEDIA_ROOT, path)
     with open(file_path, 'rb') as fh:
             response = HttpResponse(fh.read(), content_type="application/vnd.rar")
-            response['Content-Disposition'] = 'inline; filename=' + file_path
+            response['Content-Disposition'] = 'inline; filename=' + file_path +".mp4"
             return response
     return render(request, 'ytdl/download_completed.html')
 
