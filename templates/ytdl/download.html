@@ -1,0 +1,9 @@
+{% extends 'ytdl/index.html' %}
+
+{% block content %}
+<form action="/download_completed" method="get">
+<a href="{{file}}" download>
+  <input type="submit" value="Download">
+</a>
+</form>
+{% endblock %}
