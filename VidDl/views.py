@@ -70,12 +70,14 @@ def select_videos_res(request):
         print("stream audio",stream)
         # stream=stream.output("C:\\Users\\Abhijeet\\Desktop\\PyProjects\\mp\\\.temp\\Peru_finished_audio.mp3", format='mp3', acodec='libmp3lame', ab='320000')
         #ffmpeg.run(stream, capture_stdout=True, capture_stderr=True, input=None, quiet=False, overwrite_output=True)
+        #print ffmpeg error
         try:
             err,out=(ffmpeg.run(stream, cmd='venv/Lib/site-packages/ffmpeg/ffmpeg.exe', capture_stdout=True, capture_stderr=True, input=None, quiet=False, overwrite_output=True))
             print("out***********: ",out,"outerr*********: ",err)
         except ffmpeg.Error as e:
             print("err*********:" ,e.stderr, file=sys.stderr)
         # If stream is progressive
+
     else:
         #title=title+".mp4"
         vid.download(output_path=BaseDir, filename=title)
