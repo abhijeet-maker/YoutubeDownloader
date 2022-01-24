@@ -28,10 +28,10 @@ urlpatterns = [
     path('home/', views.home, name="home"),
     path('get_resolution/', views.get_videos_res),
     #Downloaded on local server
-    path('select_resolution/', views.select_videos_res),
+    path('download/', views.select_videos_res),
     #serve over client now
-    path('download/', views.download),
-path('download_completed/', views.download_completed),
+    path('download_completed/', views.download),
+#path('download_completed/', views.download_completed),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

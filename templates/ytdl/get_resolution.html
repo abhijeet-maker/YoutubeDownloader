@@ -1,7 +1,7 @@
 {% extends 'ytdl/index.html' %}
 
 {% block content %}
-<form action="/select_resolution" method="get">
+<form action="/download/#download" method="get">
 <label id=resolution class="text-white mb-4">Select Resolution:</label>
 <select name="resolution">
     {%for item in resolution%}

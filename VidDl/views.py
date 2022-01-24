@@ -72,18 +72,18 @@ def select_videos_res(request):
         vid.download(output_path=BaseDir, filename=title)
     file=BaseDir+"/"+title
     print("file",file)
-    return render(request, 'ytdl/download.html', {'file': file})
+    return render(request, 'ytdl/download.html/', {'file': file, 'title': title})
 
 #serve over client now
 def download(request):
     document_root = settings.MEDIA_ROOT
-    document_url=settings.MEDIA_URL
-    print("Media root",document_root ,document_url)
+    print("Media root",document_root)
     BaseDir = "download_raw"
     file_path = BaseDir + "/" + "COSTA.mp4"
+    print("file_path",file_path)
     #file_path = os.path.join(settings.MEDIA_ROOT, path)
     with open(file_path, 'rb') as fh:
-            response = HttpResponse(fh.read(), content_type="video/mp4")
+            response = HttpResponse(fh.read(), content_type="application/vnd.rar")
             response['Content-Disposition'] = 'inline; filename=' + file_path
             return response
     return render(request, 'ytdl/download_completed.html')

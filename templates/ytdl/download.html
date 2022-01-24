@@ -1,7 +1,8 @@
 {% extends 'ytdl/index.html' %}
 
 {% block content %}
-<form action="/download" method="get">
+<form id=download action="/download_completed/" method="get">
+  <h2 class="text-white-50 mx-auto mt-2 mb-5">File name: {{title}}</h2>
 <a href="{{file}}" download>
   <input type="submit" value="Download">
 </a>
