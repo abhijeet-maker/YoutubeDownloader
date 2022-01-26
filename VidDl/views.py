@@ -9,7 +9,9 @@ from django.http import HttpResponse
 
 # Create your views here.
 def index(request):
-    global res_dict
+    index.res_dict=""
+    index.yt=""
+    index.title=""
     # latest_question_list = Question.objects.order_by('-pub_date')[:5]
     # context = {'latest_question_list': latest_question_list}
     return render(request, 'ytdl/index.html')
@@ -22,19 +24,18 @@ def home(request):
 
 def get_videos_res(request):
     url = request.GET.get('mediaurl', 'default')
-    global yt
-    yt = pytube.YouTube(url)
+    index.yt = pytube.YouTube(url)
     print("URL: ", url)
-    yt = pytube.YouTube(url)
-    v_list = yt.streams.order_by('resolution').desc()
+    index.yt = pytube.YouTube(url)
+    v_list = index.yt.streams.order_by('resolution').desc()
     # print(v_list)
     # Append resolutions in list
     resolutions = []
-    res_dict={}
+    index.res_dict={}
     for i in v_list:
         res=str(i.resolution) + " " + str(i.fps) + "fps"
-        res_dict[res] = str(i)
-    for key in res_dict.keys():
+        index.res_dict[res] = str(i)
+    for key in index.res_dict.keys():
         resolutions.append(key)
     return render(request, 'ytdl/get_resolution.html', {'resolution': resolutions})
 
@@ -61,20 +62,22 @@ def select_videos_res(request):
     BaseDir="download_raw"
     resolution = request.GET.get('resolution', 'default')
     resl=resolution.split('}')[0]
-    itag=res_dict[resl]
+    x=index.res_dict
+    print(x)
+    itag=x[resl]
     itag=itag.split('<')
     itag=itag[1].split('>')[0].split()[1].split('=')[1].split('"')[1]
     print("Selected resolution: ",resl,itag)
     # Get Stream by itag
-    vid = yt.streams.get_by_itag(int(itag))
+    vid = index.yt.streams.get_by_itag(int(itag))
     # Get Title of video
-    global title
-    title = yt.title.split()
+    title = index.yt.title.split()
     title = title[0]
     title = ''.join(char for char in title if char.isalpha())
+    index.title=title
     print("Title:",title)
     print("Selected Resolution: ", resl)
-    if vid not in yt.streams.filter(progressive=True):
+    if vid not in index.yt.streams.filter(progressive=True):
 
         # Download video in 360p
         yt.streams.get_by_itag(18).download(output_path=BaseDir + "\\\.temp", filename=title+".mp4")
@@ -117,7 +120,7 @@ def download(request):
     document_root = settings.MEDIA_ROOT
     print("Media root",document_root)
     BaseDir = "download_raw"
-    file_path = BaseDir + "/" + title+".mp4"
+    file_path = BaseDir + "/" + index.title+".mp4"
     print("file_path",file_path)
     #file_path = os.path.join(settings.MEDIA_ROOT, path)
     with open(file_path, 'rb') as fh:
