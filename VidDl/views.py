@@ -112,7 +112,7 @@ def select_videos_res(request):
         vid.download(output_path=BaseDir, filename=title)
     video = BaseDir + "\.temp" + title +"\\"+ title + ".mp4"
     audio = BaseDir + "\.temp" + title + ".mp3"
-    output = BaseDir + "\" + title + ".mp4"
+    output = BaseDir + "\\" + title + ".mp4"
     OP = merge_audio_video(video, audio, output)
     print(OP)
     file=BaseDir+"/"+title
