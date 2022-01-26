@@ -1,1 +1,1 @@
-web: gunicorn YoutubeDl.wsgi
+web: gunicorn YoutubeDL.wsgi
