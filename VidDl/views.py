@@ -51,7 +51,7 @@ def merge_audio_video(video,audio,output):
     #print(comp)
     try:
         #print(comp)
-        ffmpeg.run(stream, cmd='binary/ffmpeg.exe', capture_stdout=True, capture_stderr=True, input=None, quiet=False, overwrite_output=True)
+        ffmpeg.run(stream, capture_stdout=True, capture_stderr=True, input=None, quiet=False, overwrite_output=True)
     except ffmpeg.Error as e:
         #print('stdout:', e.stdout.decode('utf8'))
         print('stderr:', e.stderr.decode('utf8'))
@@ -96,7 +96,7 @@ def select_videos_res(request):
         #ffmpeg.run(stream, capture_stdout=True, capture_stderr=True, input=None, quiet=False, overwrite_output=True)
         #print ffmpeg error
         try:
-            err,out=(ffmpeg.run(stream, cmd='binary/ffmpeg.exe', capture_stdout=True, capture_stderr=True, input=None, quiet=False, overwrite_output=True))
+            err,out=(ffmpeg.run(stream, capture_stdout=True, capture_stderr=True, input=None, quiet=False, overwrite_output=True))
             print("out***********: ",out,"outerr*********: ",err)
         except ffmpeg.Error as e:
             print("err*********:" ,e.stderr, file=sys.stderr)
