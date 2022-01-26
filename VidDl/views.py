@@ -121,6 +121,7 @@ def download(request):
     print("Media root",document_root)
     BaseDir = "download_raw"
     file_path = BaseDir + "/" + index.title+".mp4"
+
     print("file_path",file_path)
     #file_path = os.path.join(settings.MEDIA_ROOT, path)
     with open(file_path, 'rb') as fh:
