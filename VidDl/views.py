@@ -21,18 +21,20 @@ def home(request):
 
 def get_videos_res(request):
     url = request.GET.get('mediaurl', 'default')
-    get_videos_res.yt = pytube.YouTube(url)
+    global yt
+    yt = pytube.YouTube(url)
     print("URL: ", url)
-    get_videos_res.yt = pytube.YouTube(url)
-    v_list = get_videos_res.yt.streams.order_by('resolution').desc()
+    yt = pytube.YouTube(url)
+    v_list = yt.streams.order_by('resolution').desc()
     # print(v_list)
     # Append resolutions in list
     resolutions = []
-    get_videos_res.res_dict={}
+    global res_dict
+    res_dict={}
     for i in v_list:
         res=str(i.resolution) + " " + str(i.fps) + "fps"
-        get_videos_res.res_dict[res] = str(i)
-    for key in get_videos_res.res_dict.keys():
+        res_dict[res] = str(i)
+    for key in res_dict.keys():
         resolutions.append(key)
     return render(request, 'ytdl/get_resolution.html', {'resolution': resolutions})
 
@@ -59,22 +61,23 @@ def select_videos_res(request):
     BaseDir="download_raw"
     resolution = request.GET.get('resolution', 'default')
     resl=resolution.split('}')[0]
-    itag=get_videos_res.res_dict[resl]
+    itag=res_dict[resl]
     itag=itag.split('<')
     itag=itag[1].split('>')[0].split()[1].split('=')[1].split('"')[1]
     print("Selected resolution: ",resl,itag)
     # Get Stream by itag
-    vid = get_videos_res.yt.streams.get_by_itag(int(itag))
+    vid = yt.streams.get_by_itag(int(itag))
     # Get Title of video
-    title = get_videos_res.yt.title.split()
+    global title
+    title = yt.title.split()
     title = title[0]
     title = ''.join(char for char in title if char.isalpha())
     print("Title:",title)
     print("Selected Resolution: ", resl)
-    if vid not in get_videos_res.yt.streams.filter(progressive=True):
+    if vid not in yt.streams.filter(progressive=True):
 
         # Download video in 360p
-        get_videos_res.yt.streams.get_by_itag(18).download(output_path=BaseDir + "\\\.temp", filename=title+".mp4")
+        yt.streams.get_by_itag(18).download(output_path=BaseDir + "\\\.temp", filename=title+".mp4")
 
         # Download Video in selected resolution
         vid.download(output_path=BaseDir + "\\\.temp" + title, filename=title+".mp4")
@@ -114,15 +117,14 @@ def download(request):
     document_root = settings.MEDIA_ROOT
     print("Media root",document_root)
     BaseDir = "download_raw"
-    file_path = BaseDir + "/" + select_videos_res.title+".mp4"
+    file_path = BaseDir + "/" + title+".mp4"
     print("file_path",file_path)
     #file_path = os.path.join(settings.MEDIA_ROOT, path)
     with open(file_path, 'rb') as fh:
             response = HttpResponse(fh.read(), content_type="application/vnd.rar")
             response['Content-Disposition'] = 'inline; filename=' + file_path
             return response
-    return render(request, 'ytdl/download_completed.html')
-
+    
 
 def download_completed(request):
     return render(request, 'ytdl/index.html')
