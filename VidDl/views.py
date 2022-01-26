@@ -80,7 +80,7 @@ def select_videos_res(request):
     if vid not in index.yt.streams.filter(progressive=True):
 
         # Download video in 360p
-        yt.streams.get_by_itag(18).download(output_path=BaseDir + "\\\.temp", filename=title+".mp4")
+        index.yt.streams.get_by_itag(18).download(output_path=BaseDir + "\\\.temp", filename=title+".mp4")
 
         # Download Video in selected resolution
         vid.download(output_path=BaseDir + "\\\.temp" + title, filename=title+".mp4")
