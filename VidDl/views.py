@@ -9,6 +9,7 @@ from django.http import HttpResponse
 
 # Create your views here.
 def index(request):
+    global res_dict
     # latest_question_list = Question.objects.order_by('-pub_date')[:5]
     # context = {'latest_question_list': latest_question_list}
     return render(request, 'ytdl/index.html')
@@ -29,7 +30,6 @@ def get_videos_res(request):
     # print(v_list)
     # Append resolutions in list
     resolutions = []
-    global res_dict
     res_dict={}
     for i in v_list:
         res=str(i.resolution) + " " + str(i.fps) + "fps"
@@ -124,7 +124,7 @@ def download(request):
             response = HttpResponse(fh.read(), content_type="application/vnd.rar")
             response['Content-Disposition'] = 'inline; filename=' + file_path
             return response
-    
+
 
 def download_completed(request):
     return render(request, 'ytdl/index.html')
