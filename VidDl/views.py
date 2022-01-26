@@ -5,7 +5,7 @@ import pytube
 from django.conf import settings
 from django.shortcuts import render
 from django.http import HttpResponse
-
+import subprocess
 
 # Create your views here.
 def index(request):
@@ -44,6 +44,10 @@ def get_videos_res(request):
 def merge_audio_video(video,audio,output):
     input_video = ffmpeg.input(video)
     input_audio = ffmpeg.input(audio)
+    codec = "copy"
+    outputfile=output
+
+    #subprocess.run("ffmpeg -i video.mp4 -i audio.mp4 -c copy output.mp4")
     #stream = ffmpeg.concat(input_video, input_audio, v=1, a=1)
     #.output(<video_name>, vcodec="copy", acodec="copy ")
     stream=ffmpeg.output(input_video, input_audio, output, vcodec="copy")
@@ -51,7 +55,8 @@ def merge_audio_video(video,audio,output):
     #print(comp)
     try:
         #print(comp)
-        ffmpeg.run(stream, capture_stdout=True, capture_stderr=True, input=None, quiet=False, overwrite_output=True)
+        subprocess.run(f"ffmpeg -i {input_video} -i {input_audio} -c {codec} {outputfile}")
+        #ffmpeg.run(stream, capture_stdout=True, capture_stderr=True, input=None, quiet=False, overwrite_output=True)
     except ffmpeg.Error as e:
         #print('stdout:', e.stdout.decode('utf8'))
         print('stderr:', e.stderr.decode('utf8'))
