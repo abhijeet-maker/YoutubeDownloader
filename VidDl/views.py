@@ -64,7 +64,8 @@ def select_videos_res(request):
     resl=resolution.split('}')[0]
     x=index.res_dict
     print(x)
-    itag=x[resl]
+    itag=x(resl)
+    print("itag",itag)
     itag=itag.split('<')
     itag=itag[1].split('>')[0].split()[1].split('=')[1].split('"')[1]
     print("Selected resolution: ",resl,itag)
