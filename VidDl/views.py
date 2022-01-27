@@ -110,14 +110,13 @@ def select_videos_res(request):
     else:
         #title=title+".mp4"
         vid.download(output_path=BaseDir, filename=title)
-    video = BaseDir + "\\.temp" + title + "\\" + title + ".mp4"
-    audio = BaseDir + "\\.temp" + "\\" + title + ".mp3"
-    output = BaseDir + "\\" + title + ".mp4"
+    #video = BaseDir + "\\.temp" + title + "\\" + title + ".mp4"
+    #audio = BaseDir + "\\.temp" + "\\" + title + ".mp3"
+    #output = BaseDir + "\\" + title + ".mp4"
     #OP = merge_audio_video(video, audio, output)
     #print(OP)
     file=BaseDir+"/"+title
     print("file",file)
-    select_videos_res.title=title
     return render(request, 'ytdl/download.html/', {'file': file, 'title': title})
 
 #serve over client now
@@ -125,7 +124,9 @@ def download(request):
     document_root = settings.MEDIA_ROOT
     print("Media root",document_root)
     BaseDir = "download_raw"
-    file_path = BaseDir + "/" + index.title+".mp4"
+    title=request.GET.get('title', 'default')
+    print("title:",title)
+    file_path = BaseDir + "/" + title+".mp4"
 
     print("file_path",file_path)
     #file_path = os.path.join(settings.MEDIA_ROOT, path)
