@@ -88,10 +88,10 @@ def select_videos_res(request):
         index.yt.streams.get_by_itag(18).download(output_path=BaseDir + "\\\.temp", filename=title+".mp4")
 
         # Download Video in selected resolution
-        vid.download(output_path=BaseDir + "\.temp" + title, filename=title+".mp4")
+        vid.download(output_path=BaseDir + ".temp" + title, filename=title+".mp4")
 
         # Filter audio from 360p
-        stream = ffmpeg.input(BaseDir + "\.temp" + "\\" + title + ".mp4")
+        stream = ffmpeg.input(BaseDir + ".temp" + "\\" + title + ".mp4")
         print("stream video", stream)
         stream = stream.output(BaseDir + "\.temp" + "\\" + title + ".mp3", format='mp3', acodec='libmp3lame',
                                ab='320000')
