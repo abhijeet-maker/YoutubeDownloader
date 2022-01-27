@@ -69,7 +69,8 @@ def select_videos_res(request):
     resolution = resolution.split("<")[0]
     itag = itag.split('"')[0]
     # Get Stream by itag
-    vid = yt.streams.get_by_itag(int(itag))
+    vid = yt.streams.get_by_itag(int(itag)).download()
+    #yt.streams.get_by_itag(18).download
     # Get Title of video
     title = yt.title.split()
     title = title[0]
