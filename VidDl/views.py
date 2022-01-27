@@ -132,7 +132,7 @@ def download(request):
     title=request.GET.get('title', 'default')
     title="COSTA"
     print("title:",title)
-    file_path = str(BaseDir) + "/" + title+".mp4"
+    file_path = BaseDir + "\\" + title+".mp4"
 
     print("file_path",file_path)
     #file_path = os.path.join(settings.MEDIA_ROOT, path)
