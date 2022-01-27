@@ -107,14 +107,16 @@ def select_videos_res(request):
             print("err*********:" ,e.stderr, file=sys.stderr)
         # If stream is progressive
 
+        video = BaseDir + "/" + ".temp" + title + "/" + title + ".mp4"
+        audio = BaseDir + "/" + ".temp" + "/" + title + ".mp3"
+        output = BaseDir + "/" + title + ".mp4"
+        OP = merge_audio_video(video, audio, output)
+        print(OP)
+
     else:
         #title=title+".mp4"
         vid.download(output_path=BaseDir, filename=title)
-    video = BaseDir + "/"+".temp" + title +"/"+ title + ".mp4"
-    audio = BaseDir + "/"+".temp" + title + ".mp3"
-    output = BaseDir+"/" +title + ".mp4"
-    OP = merge_audio_video(video, audio, output)
-    print(OP)
+
     file=BaseDir+"/"+title
     print("file",file)
     select_videos_res.title=title
