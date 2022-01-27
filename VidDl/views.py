@@ -55,8 +55,8 @@ def merge_audio_video(video,audio,output):
     #print(comp)
     try:
         #print(comp)
-        subprocess.run(f"ffmpeg -i {input_video} -i {input_audio} -c {codec} {outputfile}")
-        #ffmpeg.run(stream, capture_stdout=True, capture_stderr=True, input=None, quiet=False, overwrite_output=True)
+        #subprocess.run(f"ffmpeg -i {input_video} -i {input_audio} -c {codec} {outputfile}")
+        ffmpeg.run(stream, cmd="binary/ffmpeg.exe", capture_stdout=True, capture_stderr=True, input=None, quiet=False, overwrite_output=True)
     except ffmpeg.Error as e:
         #print('stdout:', e.stdout.decode('utf8'))
         print('stderr:', e.stderr.decode('utf8'))
@@ -74,7 +74,7 @@ def select_videos_res(request):
     itag=itag[1].split('>')[0].split()[1].split('=')[1].split('"')[1]
     print("Selected resolution: ",resl,itag)
     # Get Stream by itag
-    vid = index.yt.streams.get_by_itag(int(itag)).download(output_path=BaseDir)
+    vid = index.yt.streams.get_by_itag(int(itag))
     # Get Title of video
     title = index.yt.title.split()
     title = title[0]
@@ -82,19 +82,18 @@ def select_videos_res(request):
     index.title=title
     print("Title:",title)
     print("Selected Resolution: ", resl)
-    vid.download(output_path=BaseDir, filename=title)
     if vid not in index.yt.streams.filter(progressive=True):
 
         # Download video in 360p
         index.yt.streams.get_by_itag(18).download(output_path=BaseDir + "\\\.temp", filename=title+".mp4")
 
         # Download Video in selected resolution
-        vid.download(output_path=BaseDir + ".temp" + title, filename=title+".mp4")
+        vid.download(output_path=BaseDir + "\\\.temp" + title, filename=title+".mp4")
 
         # Filter audio from 360p
-        stream = ffmpeg.input(BaseDir + ".temp" + "\\" + title + ".mp4")
+        stream = ffmpeg.input(BaseDir + "\\\.temp" + "\\" + title + ".mp4")
         print("stream video", stream)
-        stream = stream.output(BaseDir + "\.temp" + "\\" + title + ".mp3", format='mp3', acodec='libmp3lame',
+        stream = stream.output(BaseDir + "\\\.temp" + "\\" + title + ".mp3", format='mp3', acodec='libmp3lame',
                                ab='320000')
 
         print("stream audio",stream)
@@ -102,22 +101,20 @@ def select_videos_res(request):
         #ffmpeg.run(stream, capture_stdout=True, capture_stderr=True, input=None, quiet=False, overwrite_output=True)
         #print ffmpeg error
         try:
-            err,out=(ffmpeg.run(stream, capture_stdout=True, capture_stderr=True, input=None, quiet=False, overwrite_output=True))
+            err,out=(ffmpeg.run(stream, cmd="binary/ffmpeg.exe",capture_stdout=True, capture_stderr=True, input=None, quiet=False, overwrite_output=True))
             print("out***********: ",out,"outerr*********: ",err)
         except ffmpeg.Error as e:
             print("err*********:" ,e.stderr, file=sys.stderr)
         # If stream is progressive
 
-        video = BaseDir + "/" + ".temp" + title + "/" + title + ".mp4"
-        audio = BaseDir + "/" + ".temp" + "/" + title + ".mp3"
-        output = BaseDir + "/" + title + ".mp4"
-        OP = merge_audio_video(video, audio, output)
-        print(OP)
-
     else:
         #title=title+".mp4"
         vid.download(output_path=BaseDir, filename=title)
-
+    video = BaseDir + "\\.temp" + title + "\\" + title + ".mp4"
+    audio = BaseDir + "\\.temp" + "\\" + title + ".mp3"
+    output = BaseDir + "\\" + title + ".mp4"
+    OP = merge_audio_video(video, audio, output)
+    print(OP)
     file=BaseDir+"/"+title
     print("file",file)
     select_videos_res.title=title

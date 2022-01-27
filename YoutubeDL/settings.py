@@ -29,7 +29,7 @@ SECRET_KEY = '5bc9=@p34t0@h2zm9a)nqz%&l5g4lvt6+dsh0mpxu9fer=ez2d'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['magikdownload.herokuapp.com','*', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['0.0.0.0','magikdownload.herokuapp.com','*', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -136,5 +136,5 @@ MEDIA_ROOT=os.path.join(BASE_DIR,"download_raw"),
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
-#SECURE_SSL_REDIRECT = True
+SECURE_SSL_REDIRECT = False
 django_heroku.settings(locals())
