@@ -4,8 +4,8 @@
 <form action="/download/#download" method="get">
 <label id=resolution class="text-white mb-4">Select Resolution:</label>
 <select name="resolution">
-    {%for item in resolution%}
-    <option value="{{item}}}">{{item}}</option>
+    {%for key,value in resolution.items%}
+    <option value="{{key}},{{value}},{{url}}">{{key}}</option>
     {% endfor %}
 </select>
     <input type="submit" value="Convert">

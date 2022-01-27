@@ -9,9 +9,6 @@ import subprocess
 
 # Create your views here.
 def index(request):
-    index.res_dict=""
-    index.yt=""
-    index.title=""
     # latest_question_list = Question.objects.order_by('-pub_date')[:5]
     # context = {'latest_question_list': latest_question_list}
     return render(request, 'ytdl/index.html')
@@ -24,20 +21,18 @@ def home(request):
 
 def get_videos_res(request):
     url = request.GET.get('mediaurl', 'default')
-    index.yt = pytube.YouTube(url)
+    yt = pytube.YouTube(url)
     print("URL: ", url)
-    index.yt = pytube.YouTube(url)
-    v_list = index.yt.streams.order_by('resolution').desc()
+    yt = pytube.YouTube(url)
+    v_list = yt.streams.order_by('resolution').desc()
     # print(v_list)
     # Append resolutions in list
-    resolutions = []
-    index.res_dict={}
+    resolutions = {}
     for i in v_list:
-        res=str(i.resolution) + " " + str(i.fps) + "fps"
-        index.res_dict[res] = str(i)
-    for key in index.res_dict.keys():
-        resolutions.append(key)
-    return render(request, 'ytdl/get_resolution.html', {'resolution': resolutions})
+        res = str(i.resolution) + " " + str(i.fps) + "fps"
+        resolutions[res] = str(i)
+    print("yt:", yt)
+    return render(request, 'ytdl/get_resolution.html', {'resolution': resolutions, 'youtube': yt, 'url': url})
 
 
 #Merge Audi Video
@@ -50,13 +45,13 @@ def merge_audio_video(video,audio,output):
     #subprocess.run("ffmpeg -i video.mp4 -i audio.mp4 -c copy output.mp4")
     #stream = ffmpeg.concat(input_video, input_audio, v=1, a=1)
     #.output(<video_name>, vcodec="copy", acodec="copy ")
-    stream=ffmpeg.output(input_video, input_audio, output, vcodec="copy")
+    #stream=ffmpeg.output(input_video, input_audio, output, vcodec="copy")
     #comp=ffmpeg.compile(stream, cmd=BaseDir+'/ffmpeg/bin/ffmpeg')
     #print(comp)
     try:
         #print(comp)
-        #subprocess.run(f"ffmpeg -i {input_video} -i {input_audio} -c {codec} {outputfile}")
-        ffmpeg.run(stream, cmd="binary/ffmpeg.exe", capture_stdout=True, capture_stderr=True, input=None, quiet=False, overwrite_output=True)
+        subprocess.run(f"ffmpeg -i {input_video} -i {input_audio} -c {codec} {outputfile}")
+        #ffmpeg.run(stream, cmd="binary/ffmpeg.exe", capture_stdout=True, capture_stderr=True, input=None, quiet=False, overwrite_output=True)
     except ffmpeg.Error as e:
         #print('stdout:', e.stdout.decode('utf8'))
         print('stderr:', e.stderr.decode('utf8'))
@@ -64,28 +59,27 @@ def merge_audio_video(video,audio,output):
     return("Video Downloaded Sucessfully")
 #Downloaded on local server
 def select_videos_res(request):
-    BaseDir="download_raw"
+    BaseDir = "download_raw"
     resolution = request.GET.get('resolution', 'default')
-    resl=resolution.split('}')[0]
-    x=index.res_dict
-    print(x)
-    itag=x[resl]
-    itag=itag.split('<')
-    itag=itag[1].split('>')[0].split()[1].split('=')[1].split('"')[1]
-    print("Selected resolution: ",resl,itag)
+    print("*************", resolution)
+    url = resolution.split(",")[2]
+    yt = pytube.YouTube(url)
+    itag = resolution.split('itag="')[1]
+    resolution = resolution.split("<")[0]
+    itag = itag.split('"')[0]
     # Get Stream by itag
-    vid = index.yt.streams.get_by_itag(int(itag))
+    vid = yt.streams.get_by_itag(int(itag))
     # Get Title of video
-    title = index.yt.title.split()
+    title = yt.title.split()
     title = title[0]
     title = ''.join(char for char in title if char.isalpha())
     index.title=title
     print("Title:",title)
-    print("Selected Resolution: ", resl)
-    if vid not in index.yt.streams.filter(progressive=True):
+    print("Selected Resolution: ",resolution )
+    if vid not in yt.streams.filter(progressive=True):
 
         # Download video in 360p
-        index.yt.streams.get_by_itag(18).download(output_path=BaseDir + "\\\.temp", filename=title+".mp4")
+        yt.streams.get_by_itag(18).download(output_path=BaseDir + "\\\.temp", filename=title+".mp4")
 
         # Download Video in selected resolution
         vid.download(output_path=BaseDir + "\\\.temp" + title, filename=title+".mp4")
