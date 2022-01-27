@@ -86,18 +86,23 @@ def select_videos_res(request):
         vid.download(output_path=BaseDir + "\\\.temp" + title, filename=title+".mp4")
 
         # Filter audio from 360p
-        stream = ffmpeg.input(BaseDir + "\\\.temp" + "\\" + title + ".mp4")
-        print("stream video", stream)
-        stream = stream.output(BaseDir + "\\\.temp" + "\\" + title + ".mp3", format='mp3', acodec='libmp3lame',
-                               ab='320000')
+        input_video=BaseDir + "\\\.temp" + "\\" + title + ".mp4"
+        #stream = ffmpeg.input(BaseDir + "\\\.temp" + "\\" + title + ".mp4")
+        #print("stream video", stream)
+        #stream = stream.output(BaseDir + "\\\.temp" + "\\" + title + ".mp3", format='mp3', acodec='libmp3lame',ab='320000')
+        outputfile=BaseDir + "\\\.temp" + "\\" + title + ".mp3"
+        file="mp3"
+        codec="libmp3lame"
+        bitrate=320000
+        #print("stream audio",stream)
 
-        print("stream audio",stream)
         # stream=stream.output("C:\\Users\\Abhijeet\\Desktop\\PyProjects\\mp\\\.temp\\Peru_finished_audio.mp3", format='mp3', acodec='libmp3lame', ab='320000')
         #ffmpeg.run(stream, capture_stdout=True, capture_stderr=True, input=None, quiet=False, overwrite_output=True)
         #print ffmpeg error
         try:
-            err,out=(ffmpeg.run(stream, cmd="binary/ffmpeg.exe",capture_stdout=True, capture_stderr=True, input=None, quiet=False, overwrite_output=True))
-            print("out***********: ",out,"outerr*********: ",err)
+            subprocess.run(f"ffmpeg -i {input_video} -vn -f {file} -acodec {codec} -ab {bitrate} {outputfile}")
+            #err,out=(ffmpeg.run(stream, cmd="binary/ffmpeg.exe",capture_stdout=True, capture_stderr=True, input=None, quiet=False, overwrite_output=True))
+            #print("out***********: ",out,"outerr*********: ",err)
         except ffmpeg.Error as e:
             print("err*********:" ,e.stderr, file=sys.stderr)
         # If stream is progressive
