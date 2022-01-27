@@ -125,6 +125,7 @@ def download(request):
     print("Media root",document_root)
     BaseDir = "download_raw"
     title=request.GET.get('title', 'default')
+    title="COSTA"
     print("title:",title)
     file_path = BaseDir + "/" + title+".mp4"
 
