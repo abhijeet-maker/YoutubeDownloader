@@ -63,8 +63,7 @@ def merge_audio_video(video,audio,output):
     return("Video Downloaded Sucessfully")
 #Downloaded on local server
 def select_videos_res(request):
-    #BaseDir = "download_raw"
-    print("***************88",BASE_DIR)
+    BaseDir = "download_raw"
     resolution = request.GET.get('resolution', 'default')
     print("*************", resolution)
     url = resolution.split(",")[2]
@@ -86,17 +85,17 @@ def select_videos_res(request):
     if vid not in yt.streams.filter(progressive=True):
 
         # Download video in 360p
-        yt.streams.get_by_itag(18).download(output_path=BASE_DIR + "\\\.temp", filename=title+".mp4")
+        yt.streams.get_by_itag(18).download(output_path=BaseDir + "\\\.temp", filename=title+".mp4")
 
         # Download Video in selected resolution
-        vid.download(output_path=BASE_DIR + "\\\.temp" + title, filename=title+".mp4")
+        vid.download(output_path=BaseDir + "\\\.temp" + title, filename=title+".mp4")
 
         # Filter audio from 360p
-        input_video=BASE_DIR + "\\\.temp" + "\\" + title + ".mp4"
+        input_video=BaseDir + "\\\.temp" + "\\" + title + ".mp4"
         #stream = ffmpeg.input(BaseDir + "\\\.temp" + "\\" + title + ".mp4")
         #print("stream video", stream)
         #stream = stream.output(BaseDir + "\\\.temp" + "\\" + title + ".mp3", format='mp3', acodec='libmp3lame',ab='320000')
-        outputfile=BASE_DIR + "\\\.temp" + "\\" + title + ".mp3"
+        outputfile=BaseDir + "\\\.temp" + "\\" + title + ".mp3"
         file="mp3"
         codec="libmp3lame"
         bitrate=320000
@@ -115,13 +114,13 @@ def select_videos_res(request):
 
     else:
         #title=title+".mp4"
-        vid.download(output_path=BASE_DIR, filename=title)
+        vid.download(output_path=BaseDir, filename=title)
     #video = BaseDir + "\\.temp" + title + "\\" + title + ".mp4"
     #audio = BaseDir + "\\.temp" + "\\" + title + ".mp3"
     #output = BaseDir + "\\" + title + ".mp4"
     #OP = merge_audio_video(video, audio, output)
     #print(OP)
-    file=BASE_DIR+"\\"+title
+    file=BaseDir+"/"+title
     print("file",file)
     return render(request, 'ytdl/download.html/', {'file': file, 'title': title})
 
@@ -129,11 +128,11 @@ def select_videos_res(request):
 def download(request):
     document_root = settings.MEDIA_ROOT
     print("Media root",document_root)
-    #BaseDir = "download_raw"
+    BaseDir = BASE_DIR
     title=request.GET.get('title', 'default')
     title="COSTA"
     print("title:",title)
-    file_path = BASE_DIR + "\\" + title+".mp4"
+    file_path = BaseDir + "/" + title+".mp4"
 
     print("file_path",file_path)
     #file_path = os.path.join(settings.MEDIA_ROOT, path)
