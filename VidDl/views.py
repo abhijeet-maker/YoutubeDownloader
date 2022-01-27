@@ -64,6 +64,7 @@ def merge_audio_video(video,audio,output):
 #Downloaded on local server
 def select_videos_res(request):
     #BaseDir = "download_raw"
+    print("***************88",BASE_DIR)
     resolution = request.GET.get('resolution', 'default')
     print("*************", resolution)
     url = resolution.split(",")[2]
@@ -120,7 +121,7 @@ def select_videos_res(request):
     #output = BaseDir + "\\" + title + ".mp4"
     #OP = merge_audio_video(video, audio, output)
     #print(OP)
-    file=BASE_DIR+"/"+title
+    file=BASE_DIR+"\\"+title
     print("file",file)
     return render(request, 'ytdl/download.html/', {'file': file, 'title': title})
 
@@ -132,7 +133,7 @@ def download(request):
     title=request.GET.get('title', 'default')
     title="COSTA"
     print("title:",title)
-    file_path = BASE_DIR + "/" + title+".mp4"
+    file_path = BASE_DIR + "\\" + title+".mp4"
 
     print("file_path",file_path)
     #file_path = os.path.join(settings.MEDIA_ROOT, path)
