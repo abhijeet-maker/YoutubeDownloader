@@ -74,7 +74,7 @@ def select_videos_res(request):
     itag=itag[1].split('>')[0].split()[1].split('=')[1].split('"')[1]
     print("Selected resolution: ",resl,itag)
     # Get Stream by itag
-    vid = index.yt.streams.get_by_itag(int(itag)).download(output_path=BaseDir, filename=title)
+    vid = index.yt.streams.get_by_itag(int(itag)).download(output_path=BaseDir)
     # Get Title of video
     title = index.yt.title.split()
     title = title[0]
