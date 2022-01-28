@@ -59,7 +59,7 @@ def merge_audio_video(video,audio,output):
     #print(comp)
     try:
         #print(comp)
-        subprocess.run(["ffmpeg","-i",str(input_video),"-i",str(input_audio),"-c",str(codec,str(outputfile)])
+        subprocess.run(["ffmpeg","-i",str(input_video),"-i",str(input_audio),"-c",str(codec),str(outputfile)])
         #ffmpeg.run(stream, cmd="binary/ffmpeg.exe", capture_stdout=True, capture_stderr=True, input=None, quiet=False, overwrite_output=True)
     except ffmpeg.Error as e:
         #print('stdout:', e.stdout.decode('utf8'))
