@@ -119,6 +119,7 @@ def select_videos_res(request):
     else:
         #title=title+".mp4"
         vid.download(output_path=BaseDir, filename=title+".mp4")
+        print("downld complete or not", vid.download(output_path=BaseDir, filename=title+".mp4"))
     #video = BaseDir + "\\.temp" + title + "\\" + title + ".mp4"
     #audio = BaseDir + "\\.temp" + "\\" + title + ".mp3"
     #output = BaseDir + "\\" + title + ".mp4"
@@ -134,8 +135,8 @@ def download(request):
     #document_root = settings.MEDIA_ROOT
     #print("Media root",document_root)
     BaseDir = "/app/download_raw"
-    title=request.GET.get('title', 'default')
-    #title="COSTA"
+    title=request.GET.get('title')
+    title="COSTA.mp4"
     print("****title:",title)
     #BaseDir="YoutubeDownloader"
     file_path = BaseDir + "/" + title
