@@ -1,3 +1,4 @@
+import os
 import sys
 
 import ffmpeg
@@ -8,7 +9,7 @@ from django.http import HttpResponse
 import subprocess
 
 # Create your views here.
-from YoutubeDL.settings import BASE_DIR
+from YoutubeDL.settings import BASE_DIR, MEDIA_ROOT
 
 
 def index(request):
@@ -63,7 +64,10 @@ def merge_audio_video(video,audio,output):
     return("Video Downloaded Sucessfully")
 #Downloaded on local server
 def select_videos_res(request):
-    BaseDir = "download_raw"
+    #BaseDir = "download_raw"
+    document_root = settings.MEDIA_ROOT
+    print("Media root", document_root)
+    BaseDir = document_root
     resolution = request.GET.get('resolution', 'default')
     print("*************", resolution)
     url = resolution.split(",")[2]
@@ -83,7 +87,7 @@ def select_videos_res(request):
     print("Title:",title)
     print("Selected Resolution: ",resolution )
     if vid not in yt.streams.filter(progressive=True):
-
+        print("Current Working directory",os.getcwd(),MEDIA_ROOT)
         # Download video in 360p
         yt.streams.get_by_itag(18).download(output_path=BaseDir + "\\\.temp", filename=title+".mp4")
 
@@ -128,11 +132,11 @@ def select_videos_res(request):
 def download(request):
     document_root = settings.MEDIA_ROOT
     print("Media root",document_root)
-    BaseDir = BASE_DIR
+    BaseDir = document_root
     title=request.GET.get('title', 'default')
-    title="COSTA"
+    #title="COSTA"
     print("title:",title)
-    BaseDir="YoutubeDownloader"
+    #BaseDir="YoutubeDownloader"
     file_path = BaseDir + "/" + title+".mp4"
 
     print("file_path",file_path)
