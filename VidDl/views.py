@@ -95,6 +95,8 @@ def select_videos_res(request):
         yt.streams.get_by_itag(18).download(output_path=BaseDir + "/.temp", filename=title+".mp4")
         path = Path(BaseDir + "/.temp" + "/" + title + ".mp4")
         os.listdir(BaseDir + "/.temp")
+
+
         print("chk file",os.listdir(BaseDir + "/.temp"))
         # Download Video in selected resolution
         vid.download(output_path=BaseDir + "/.temp" + title, filename=title+".mp4")
@@ -118,7 +120,7 @@ def select_videos_res(request):
         print("ffmpeg")
         subprocess.run("ffmpeg")
         try:
-            subprocess.run("ffmpeg -i ")
+            subprocess.run("ffmpeg '-i' ")
             #subprocess.run(f"ffmpeg -i {input_video} -vn -f {file} -acodec {codec} -ab {bitrate} {outputfile}")
             #err,out=(ffmpeg.run(stream, cmd="binary/ffmpeg.exe",capture_stdout=True, capture_stderr=True, input=None, quiet=False, overwrite_output=True))
             #print("out***********: ",out,"outerr*********: ",err)
