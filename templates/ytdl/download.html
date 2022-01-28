@@ -3,7 +3,8 @@
 {% block content %}
 <form id=download action="/download_completed/" method="get">
   <h2 name="title" class="text-white-50 mx-auto mt-2 mb-5">File name: {{title}}</h2>
-<a href="{{dnld}}" download>
+
+  <a name="title" href="{{file}}" download>
   <input type="submit" value="Download">
 </a>
 </form>
