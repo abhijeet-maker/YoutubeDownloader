@@ -35,7 +35,7 @@ def get_videos_res(request):
     for i in v_list:
         res = str(i.resolution) + " " + str(i.fps) + "fps"
         resolutions[res] = str(i)
-    print("yt:", yt)
+    #print("yt:", yt)
     return render(request, 'ytdl/get_resolution.html', {'resolution': resolutions, 'youtube': yt, 'url': url})
 
 
@@ -65,11 +65,11 @@ def merge_audio_video(video,audio,output):
 #Downloaded on local server
 def select_videos_res(request):
     #BaseDir = "download_raw"
-    document_root = settings.MEDIA_ROOT
-    print("Media root", document_root)
+    #document_root = settings.MEDIA_ROOT
+    #print("Media root", document_root)
     BaseDir = "/app/download_raw"
     resolution = request.GET.get('resolution', 'default')
-    print("*************", resolution)
+    #print("*************", resolution)
     url = resolution.split(",")[2]
     yt = pytube.YouTube(url)
     itag = resolution.split('itag="')[1]
@@ -84,22 +84,25 @@ def select_videos_res(request):
     title = title[0]
     title = ''.join(char for char in title if char.isalpha())
     index.title=title
-    print("Title:",title)
-    print("Selected Resolution: ",resolution )
+    #print("Title:",title)
+    #print("Selected Resolution: ",resolution )
     if vid not in yt.streams.filter(progressive=True):
-        print("Current Working directory",os.getcwd(),MEDIA_ROOT)
+        print("*****************",vid,yt.streams.filter(progressive=True))
+        #print("Current Working directory",os.getcwd(),MEDIA_ROOT)
         # Download video in 360p
         yt.streams.get_by_itag(18).download(output_path=BaseDir + "/.temp", filename=title+".mp4")
 
         # Download Video in selected resolution
         vid.download(output_path=BaseDir + "/.temp" + title, filename=title+".mp4")
-        print("downld complete or not",vid.download())
+        print("downld complete or not",vid.download(vid.download(output_path=BaseDir + "/.temp" + title, filename=title+".mp4")))
         # Filter audio from 360p
         input_video=BaseDir + "/.temp" + "/" + title + ".mp4"
+        print("input_video",input_video)
         #stream = ffmpeg.input(BaseDir + "\\\.temp" + "\\" + title + ".mp4")
         #print("stream video", stream)
         #stream = stream.output(BaseDir + "\\\.temp" + "\\" + title + ".mp3", format='mp3', acodec='libmp3lame',ab='320000')
         outputfile=BaseDir + "/.temp" + "/" + title + ".mp3"
+        print("outputfile",outputfile)
         file="mp3"
         codec="libmp3lame"
         bitrate=320000
