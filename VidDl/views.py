@@ -77,7 +77,7 @@ def select_videos_res(request):
     itag = itag.split('"')[0]
     # Get Stream by itag
     vid = yt.streams.get_by_itag(int(itag))
-    yt.streams.get_by_itag(int(itag)).download()
+    #yt.streams.get_by_itag(int(itag)).download()
     #yt.streams.get_by_itag(18).download
     # Get Title of video
     title = yt.title.split()
@@ -94,7 +94,7 @@ def select_videos_res(request):
 
         # Download Video in selected resolution
         vid.download(output_path=BaseDir + "/.temp" + title, filename=title+".mp4")
-        #print("downld complete or not",vid.download(vid.download(output_path=BaseDir + "/.temp" + title, filename=title+".mp4")))
+        #print("downld complete or not",vid.download(output_path=BaseDir + "/.temp" + title, filename=title+".mp4"))
         # Filter audio from 360p
         input_video=BaseDir + "/.temp" + "/" + title + ".mp4"
         print("input_video",input_video)
