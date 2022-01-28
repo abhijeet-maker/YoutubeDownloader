@@ -127,7 +127,7 @@ def select_videos_res(request):
     #print(OP)
     title=title+".mp4"
     file=BaseDir+"/"+title
-    Title_object = open(r"download_raw/title.txt","a")
+    Title_object = open(r"/app/download_raw/title.txt","a")
     Title_object.write(title)
     print(Title_object.readlines())
     Title_object.close()
@@ -141,7 +141,7 @@ def download(request):
     #print("******title",select_videos_res.__str__())
     BaseDir = "/app/download_raw"
     #print("request",request.GET.get())
-    Title_object = open(r"download_raw/title.txt", "a")
+    Title_object = open(r"/app/download_raw/title.txt", "a")
     title=Title_object.readlines()[0]
     Title_object.close()
     #print("title",title)
