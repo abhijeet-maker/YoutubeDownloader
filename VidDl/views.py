@@ -169,7 +169,7 @@ def download(request):
     #file_path = os.path.join(settings.MEDIA_ROOT, path)
     #temp_files=os.listdir(BaseDir + "/.temp")
     dir=BaseDir + "/.temp"+title
-    print(os.listdir(dir))
+    #print(os.listdir(dir))
     #for f in os.listdir(dir):
     #    os.remove(dir)
     #print(os.listdir(dir))
