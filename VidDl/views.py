@@ -118,10 +118,10 @@ def select_videos_res(request):
         #ffmpeg.run(stream, capture_stdout=True, capture_stderr=True, input=None, quiet=False, overwrite_output=True)
         #print ffmpeg error
         print("ffmpeg")
-        subprocess.run("ffmpeg")
+        #subprocess.run("ffmpeg")
         try:
             #subprocess.run(['ffmpeg','-h'])
-            subprocess.run(["ffmpeg","-i",{input_video},"-vn","-f",{file},"-acodec",{codec},"-ab",{bitrate},{outputfile}])
+            subprocess.run(["ffmpeg","-i",{input_video}])
             #err,out=(ffmpeg.run(stream, cmd="binary/ffmpeg.exe",capture_stdout=True, capture_stderr=True, input=None, quiet=False, overwrite_output=True))
             #print("out***********: ",out,"outerr*********: ",err)
         except ffmpeg.Error as e:
