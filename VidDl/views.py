@@ -140,9 +140,13 @@ def download(request):
     print("******title",select_videos_res.__str__())
     BaseDir = "/app/download_raw"
     #print("request",request.GET.get())
-    title=request.GET.get('title')
+    #title=request.GET.get('title')
+    Title_object = open(r"/app/download_raw/title.txt", "r")
+    title = Title_object.readlines()
+    Title_object.close()
+    title=title[0]
     print("title",title)
-    title="COSTA.mp4"
+    #title="COSTA.mp4"
     print("****title:",title)
     #BaseDir="YoutubeDownloader"
     file_path = BaseDir + "/" + title
