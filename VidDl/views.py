@@ -99,7 +99,7 @@ def select_videos_res(request):
         os.listdir(BaseDir + "/.temp")
 
 
-        print("chk file",os.listdir(BaseDir + "/.temp"))
+        #print("chk file",os.listdir(BaseDir + "/.temp"))
         # Download Video in selected resolution
         vid.download(output_path=BaseDir + "/.temp" + title, filename=title+".mp4")
         #print("downld complete or not",vid.download(output_path=BaseDir + "/.temp" + title, filename=title+".mp4"))
@@ -167,10 +167,17 @@ def download(request):
 
     print("file_path",file_path)
     #file_path = os.path.join(settings.MEDIA_ROOT, path)
+    #temp_files=os.listdir(BaseDir + "/.temp")
+    dir=BaseDir + "/.temp"+title
+    print(os.listdir(dir))
+    #for f in os.listdir(dir):
+    #    os.remove(dir)
+    #print(os.listdir(dir))
     with open(file_path, 'rb') as fh:
             response = HttpResponse(fh.read(), content_type="application/vnd.rar")
             response['Content-Disposition'] = 'inline; filename=' + file_path
             return response
+
 
 
 def download_completed(request):
