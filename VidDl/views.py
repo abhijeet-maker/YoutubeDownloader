@@ -43,9 +43,11 @@ def get_videos_res(request):
 
 #Merge Audi Video
 def merge_audio_video(video,audio,output):
-    input_video = ffmpeg.input(video)
-    input_audio = ffmpeg.input(audio)
+    input_video = video
+    input_audio = audio
     codec = "copy"
+    #input_video = ffmpeg.input(video)
+    #input_audio = ffmpeg.input(audio)
     outputfile=output
 
 
@@ -57,7 +59,7 @@ def merge_audio_video(video,audio,output):
     #print(comp)
     try:
         #print(comp)
-        subprocess.run(f"ffmpeg -i {input_video} -i {input_audio} -c {codec} {outputfile}")
+        subprocess.run(["ffmpeg","-i",str(input_video),"-i",str(input_audio),"-c",str(codec,str(outputfile)])
         #ffmpeg.run(stream, cmd="binary/ffmpeg.exe", capture_stdout=True, capture_stderr=True, input=None, quiet=False, overwrite_output=True)
     except ffmpeg.Error as e:
         #print('stdout:', e.stdout.decode('utf8'))
@@ -132,11 +134,11 @@ def select_videos_res(request):
         #title=title+".mp4"
         vid.download(output_path=BaseDir, filename=title+".mp4")
         print("downld complete or not", vid.download(output_path=BaseDir, filename=title+".mp4"))
-    #video = BaseDir + "\\.temp" + title + "\\" + title + ".mp4"
-    #audio = BaseDir + "\\.temp" + "\\" + title + ".mp3"
-    #output = BaseDir + "\\" + title + ".mp4"
-    #OP = merge_audio_video(video, audio, output)
-    #print(OP)
+    video = BaseDir + "/.temp" + title + "/" + title + ".mp4"
+    audio = BaseDir + "/.temp" + "/" + title + ".mp3"
+    output = BaseDir + "/" + title + ".mp4"
+    OP = merge_audio_video(video, audio, output)
+    print(OP)
     title=title+".mp4"
     file=BaseDir+"/"+title
     Title_object = open(r"/app/download_raw/title.txt", "w")
