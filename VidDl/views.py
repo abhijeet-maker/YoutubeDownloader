@@ -122,7 +122,7 @@ def select_videos_res(request):
     #print(OP)
     file=BaseDir+"/"+title
     print("file",file)
-    return render(request, 'ytdl/download.html/', {'file': file, 'title': title})
+    return render(request, 'ytdl/download.html/', {'file': file, 'title': title,'dnld':yt.streams.get_by_itag(int(itag)).download()})
 
 #serve over client now
 def download(request):
