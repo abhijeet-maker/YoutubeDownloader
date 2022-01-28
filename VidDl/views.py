@@ -127,11 +127,9 @@ def select_videos_res(request):
     #print(OP)
     title=title+".mp4"
     file=BaseDir+"/"+title
-    def __str__(self):
-        #title = self.title
-        # email=self.prof_img
-        return title
-
+    Title_object = open(r"/app/download_raw/title.txt", "w")
+    Title_object.write(title)
+    Title_object.close()
     print("file",file)
     return render(request, 'ytdl/download.html/', {'file': file, 'title': title,'dnld':yt.streams.get_by_itag(int(itag)).download()})
 
