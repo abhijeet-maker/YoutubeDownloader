@@ -111,6 +111,8 @@ def select_videos_res(request):
         # stream=stream.output("C:\\Users\\Abhijeet\\Desktop\\PyProjects\\mp\\\.temp\\Peru_finished_audio.mp3", format='mp3', acodec='libmp3lame', ab='320000')
         #ffmpeg.run(stream, capture_stdout=True, capture_stderr=True, input=None, quiet=False, overwrite_output=True)
         #print ffmpeg error
+        print("ffmpeg")
+        subprocess.run("ffmpeg")
         try:
             subprocess.run(f"ffmpeg -i {input_video} -vn -f {file} -acodec {codec} -ab {bitrate} {outputfile}")
             #err,out=(ffmpeg.run(stream, cmd="binary/ffmpeg.exe",capture_stdout=True, capture_stderr=True, input=None, quiet=False, overwrite_output=True))
