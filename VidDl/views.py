@@ -127,9 +127,9 @@ def select_videos_res(request):
     #print(OP)
     title=title+".mp4"
     file=BaseDir+"/"+title
-    Title_object = open(r"/app/download_raw/title.txt","a")
+    Title_object = open(r"/app/download_raw/title.txt","w")
     Title_object.write(title)
-    print(Title_object.readlines())
+    #print(Title_object.readlines())
     Title_object.close()
     print("file",file)
     return render(request, 'ytdl/download.html/', {'file': file, 'title': title,'dnld':yt.streams.get_by_itag(int(itag)).download()})
@@ -141,14 +141,14 @@ def download(request):
     #print("******title",select_videos_res.__str__())
     BaseDir = "/app/download_raw"
     #print("request",request.GET.get())
-    Title_object = open(r"/app/download_raw/title.txt", "a")
-    title=Title_object.readlines()[0]
+    Title_object = open(r"/app/download_raw/title.txt", "r")
+    title=Title_object.readlines()
     Title_object.close()
     #print("title",title)
     #title="COSTA.mp4"
     print("****title:",title)
     #BaseDir="YoutubeDownloader"
-    file_path = BaseDir + "/" + title
+    file_path = BaseDir + "/" + title[0]
 
     print("file_path",file_path)
     #file_path = os.path.join(settings.MEDIA_ROOT, path)
