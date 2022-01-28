@@ -67,7 +67,7 @@ def select_videos_res(request):
     #BaseDir = "download_raw"
     document_root = settings.MEDIA_ROOT
     print("Media root", document_root)
-    BaseDir = document_root
+    BaseDir = "/app/download_raw"
     resolution = request.GET.get('resolution', 'default')
     print("*************", resolution)
     url = resolution.split(",")[2]
@@ -132,7 +132,7 @@ def select_videos_res(request):
 def download(request):
     document_root = settings.MEDIA_ROOT
     print("Media root",document_root)
-    BaseDir = document_root
+    BaseDir = "/app/download_raw"
     title=request.GET.get('title', 'default')
     #title="COSTA"
     print("title:",title)
