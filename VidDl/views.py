@@ -7,6 +7,8 @@ from django.conf import settings
 from django.shortcuts import render
 from django.http import HttpResponse
 import subprocess
+from pathlib import Path
+
 
 # Create your views here.
 from YoutubeDL.settings import BASE_DIR, MEDIA_ROOT
@@ -91,7 +93,9 @@ def select_videos_res(request):
         #print("Current Working directory",os.getcwd(),MEDIA_ROOT)
         # Download video in 360p
         yt.streams.get_by_itag(18).download(output_path=BaseDir + "/.temp", filename=title+".mp4")
+        path = Path(BaseDir + "/.temp" + "/" + title + ".mp4")
 
+        print("chk file",path.is_file())
         # Download Video in selected resolution
         vid.download(output_path=BaseDir + "/.temp" + title, filename=title+".mp4")
         #print("downld complete or not",vid.download(output_path=BaseDir + "/.temp" + title, filename=title+".mp4"))
