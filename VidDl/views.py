@@ -99,7 +99,8 @@ def select_videos_res(request):
         os.listdir(BaseDir + "/.temp")
 
 
-        #print("chk file",os.listdir(BaseDir + "/.temp"))
+        print("chk BaseDir",os.listdir(BaseDir + "/.temp"))
+        print("chk temp", os.listdir(BaseDir + "/.temp"))
         # Download Video in selected resolution
         vid.download(output_path=BaseDir + "/.temp" + title, filename=title+".mp4")
         #print("downld complete or not",vid.download(output_path=BaseDir + "/.temp" + title, filename=title+".mp4"))
