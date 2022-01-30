@@ -59,7 +59,7 @@ def merge_audio_video(video,audio,output):
     #print(comp)
     try:
         #print(comp)
-        subprocess.run(["ffmpeg","-i",str(input_video),"-i",str(input_audio),"-c",str(codec),str(outputfile)])
+        subprocess.run(["ffmpeg","-i",str(input_video),"-i",str(input_audio),"-c",str(codec),"-y",str(outputfile)])
         #ffmpeg.run(stream, cmd="binary/ffmpeg.exe", capture_stdout=True, capture_stderr=True, input=None, quiet=False, overwrite_output=True)
     except ffmpeg.Error as e:
         #print('stdout:', e.stdout.decode('utf8'))
@@ -123,7 +123,7 @@ def select_videos_res(request):
         #subprocess.run("ffmpeg")
         try:
             #subprocess.run(['ffmpeg','-h'])
-            subprocess.run(["ffmpeg","-i",str(input_video),"-vn","-f",file,"-acodec",str(codec),"-ab",str(bitrate),str(outputfile)])
+            subprocess.run(["ffmpeg","-i",str(input_video),"-vn","-f",file,"-acodec",str(codec),"-ab",str(bitrate),"-y",str(outputfile)])
             os.remove(str(input_video))
             #err,out=(ffmpeg.run(stream, cmd="binary/ffmpeg.exe",capture_stdout=True, capture_stderr=True, input=None, quiet=False, overwrite_output=True))
             #print("out***********: ",out,"outerr*********: ",err)
@@ -171,7 +171,7 @@ def download(request):
     print("file_path",file_path)
     #file_path = os.path.join(settings.MEDIA_ROOT, path)
     #temp_files=os.listdir(BaseDir + "/.temp")
-    dir=BaseDir + "/.temp"+title
+    dir=BaseDir
     print(os.listdir(dir))
     #for f in os.listdir(dir):
     #    os.remove(dir)
