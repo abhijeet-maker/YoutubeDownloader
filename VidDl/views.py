@@ -17,6 +17,7 @@ from YoutubeDL.settings import BASE_DIR, MEDIA_ROOT
 def index(request):
     # latest_question_list = Question.objects.order_by('-pub_date')[:5]
     # context = {'latest_question_list': latest_question_list}
+    return render(request, 'ytdl/index.html')
     # return HttpResponse("Index Page")
 
 
