@@ -145,7 +145,7 @@ def select_videos_res(request):
     print(OP)
     title=title+".mp4"
     file=BaseDir+"/"+title
-    Title_object = open(r"/app/download_raw/title.txt", "w")
+    Title_object = open(BaseDir+"/"+"title.txt"+str(os.getpid()), "w")
     Title_object.write(title)
     Title_object.close()
     print("file",file)
@@ -159,11 +159,12 @@ def download(request):
     BaseDir = "/app/download_raw"
     #print("request",request.GET.get())
     #title=request.GET.get('title')
-    Title_object = open(r"/app/download_raw/title.txt", "r")
+    Title_object = open(BaseDir+"/"+"title.txt"+str(os.getpid()), "r")
     title = Title_object.readlines()
     Title_object.close()
     title=title[0]
     print("title",title)
+    os.remove(str(BaseDir+"/"+"title.txt"+str(os.getpid())))
     #title="COSTA.mp4"
     print("****title:",title)
     #BaseDir="YoutubeDownloader"
