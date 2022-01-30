@@ -17,6 +17,10 @@ from YoutubeDL.settings import BASE_DIR, MEDIA_ROOT
 def index(request):
     # latest_question_list = Question.objects.order_by('-pub_date')[:5]
     # context = {'latest_question_list': latest_question_list}
+    BaseDir = "/app/download_raw"
+    for f in os.listdir(BaseDir):
+        print(f)
+        #os.remove(f)
     return render(request, 'ytdl/index.html')
     # return HttpResponse("Index Page")
 
@@ -178,8 +182,6 @@ def download(request):
     dir=BaseDir
     print(os.listdir(dir))
     print(os.listdir(dir+"/"+".temp"))
-    #for f in os.listdir(dir):
-    #    os.remove(dir)
     #print(os.listdir(dir))
     with open(file_path, 'rb') as fh:
             response = HttpResponse(fh.read(), content_type="application/vnd.rar")
