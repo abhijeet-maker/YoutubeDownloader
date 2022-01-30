@@ -18,7 +18,7 @@ def index(request):
     # latest_question_list = Question.objects.order_by('-pub_date')[:5]
     # context = {'latest_question_list': latest_question_list}
     # return HttpResponse("Index Page")
-    return render(request, 'ytdl/index.html')
+
 
 def home(request):
     return render(request, 'ytdl/home.html')
@@ -150,9 +150,6 @@ def select_videos_res(request):
     Title_object.write(title)
     Title_object.close()
     print("file",file)
-    for f in os.listdir(BaseDir):
-        print(f)
-        # os.remove(f)
     return render(request, 'ytdl/download.html/', {'file': file, 'title': title,'dnld':yt.streams.get_by_itag(int(itag)).download()})
 
 #serve over client now
