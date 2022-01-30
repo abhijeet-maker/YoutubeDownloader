@@ -140,7 +140,7 @@ def select_videos_res(request):
     audio = BaseDir + "/.temp" + "/" + title + ".mp3"
     output = BaseDir + "/" + title + ".mp4"
     OP = merge_audio_video(video, audio, output)
-    os.remove(str(video))
+    os.remove(str(BaseDir + "/.temp" + title))
     os.remove(str(audio))
     print(OP)
     title=title+".mp4"
@@ -177,6 +177,7 @@ def download(request):
     #temp_files=os.listdir(BaseDir + "/.temp")
     dir=BaseDir
     print(os.listdir(dir))
+    print(os.listdir(dir+"/"+".temp"))
     #for f in os.listdir(dir):
     #    os.remove(dir)
     #print(os.listdir(dir))
