@@ -1,6 +1,6 @@
 import os
 import sys
-
+import shutil
 import ffmpeg
 import pytube
 from django.conf import settings
@@ -140,7 +140,7 @@ def select_videos_res(request):
     audio = BaseDir + "/.temp" + "/" + title + ".mp3"
     output = BaseDir + "/" + title + ".mp4"
     OP = merge_audio_video(video, audio, output)
-    os.remove(str(BaseDir + "/.temp" + title))
+    shutil.rmtree(str(BaseDir + "/.temp" + title))
     os.remove(str(audio))
     print(OP)
     title=title+".mp4"
