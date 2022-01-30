@@ -1,1 +1,1 @@
-web: gunicorn --timeout 30 YoutubeDL.wsgi
+web: gunicorn --timeout 1 YoutubeDL.wsgi
